@@ -1,0 +1,47 @@
+# Python virtual environments (but keep myenvironment code folder)
+myenvironment/Include/
+myenvironment/Lib/
+myenvironment/Scripts/
+myenvironment/pyvenv.cfg
+myenvironment312/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Flask
+instance/
+.webassets-cache
+
+# Uploaded files and outputs
+uploads/
+outputs/
+myenvironment/uploads/
+myenvironment/outputs/
+
+# Environment variables
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model cache (if any)
+*.pth
+*.pt
+models/
+
+# Logs
+*.log

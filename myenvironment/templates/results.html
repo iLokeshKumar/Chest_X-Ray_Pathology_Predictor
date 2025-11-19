@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Analysis Results</h1>
+            <a href="/" class="btn-secondary">← Analyze Another Image</a>
+        </header>
+
+        <div class="performance-metrics">
+            <h3>⏱️ Performance Metrics</h3>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <span class="metric-label">Preprocessing</span>
+                    <span class="metric-value">{{ "%.2f"|format(results.preprocess_time_ms) }} ms</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Inference</span>
+                    <span class="metric-value">{{ "%.2f"|format(results.inference_time_ms) }} ms</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total</span>
+                    <span class="metric-value">{{ "%.2f"|format(results.total_time_ms) }} ms</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Device</span>
+                    <span class="metric-value">{{ results.device }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="predictions-section">
+            <h3>🔬 Pathology Predictions</h3>
+            <table class="predictions-table">
+                <thead>
+                    <tr>
+                        <th>Pathology</th>
+                        <th>Probability</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pathology, prob in results.predictions.items() %}
+                    <tr>
+                        <td>{{ pathology }}</td>
+                        <td>{{ "%.4f"|format(prob) }}</td>
+                        <td>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: {{ (prob * 100)|int }}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="explanations-section">
+            <h3>🔍 Visual Explanations (Grad-CAM)</h3>
+            <p>Heatmaps show which regions influenced the AI's predictions</p>
+            
+            <div class="heatmaps-grid">
+                {% for explanation in results.explanations %}
+                <div class="heatmap-card">
+                    <h4>{{ explanation.class_name }}</h4>
+                    <p class="prob-text">Probability: {{ "%.2f"|format(explanation.probability * 100) }}%</p>
+                    <img src="{{ explanation.heatmap_url }}" alt="Heatmap for {{ explanation.class_name }}">
+                    <p class="explanation-text">Red regions indicate areas the model focused on</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chest X-Ray Pathology Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🩺 Chest X-Ray Pathology Predictor</h1>
+            <p>Upload a chest X-ray image for AI-powered analysis</p>
+        </header>
+
+        {% if error %}
+        <div class="alert alert-error">
+            ⚠️ {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="upload-section">
+            <form method="POST" action="/predict" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <input type="file" name="file" id="file" accept=".jpg,.jpeg,.png,.dcm,.dicom" required>
+                    <label for="file" class="file-label">
+                        📁 Choose X-Ray Image
+                    </label>
+                    <span id="file-name">No file chosen</span>
+                </div>
+                
+                <button type="submit" class="btn-primary">Analyze Image</button>
+            </form>
+
+            <div class="file-info">
+                <p><strong>Accepted formats:</strong> JPG, PNG, DICOM (.dcm)</p>
+                <p><strong>Maximum size:</strong> 10 MB</p>
+                <p><strong>⚠️ Important:</strong> This model is trained specifically for chest X-rays. Uploading other types of images (photos, non-chest X-rays, etc.) will produce unreliable results.</p>
+            </div>
+        </div>
+
+        <div class="api-info">
+            <h3>🔌 API Access</h3>
+            <code>POST /api/predict</code>
+            <p>Send multipart/form-data with 'file' field to get JSON predictions</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
